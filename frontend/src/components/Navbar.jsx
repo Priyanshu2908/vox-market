@@ -14,7 +14,7 @@ const Navbar = () => {
                                 href="#"
                                 aria-label="Brand"
                             >
-                                Brand
+                                QuickKart
                             </a>
                             {/* Collapse Button */}
                             <button
@@ -138,10 +138,10 @@ const Navbar = () => {
                                                 </svg>
                                                 Work
                                             </a>
-                                            <a
+                                            <Link
                                                 className="p-2 flex items-center text-sm text-gray-800 hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
-                                                href="#"
-                                            >
+                                                href="/contact">
+                                               
                                                 <svg
                                                     className="shrink-0 size-4 me-3 md:me-2 block md:hidden"
                                                     xmlns="http://www.w3.org/2000/svg"
@@ -159,8 +159,8 @@ const Navbar = () => {
                                                     <path d="M15 18h-5" />
                                                     <path d="M10 6h8v4h-8V6Z" />
                                                 </svg>
-                                                Blog
-                                            </a>
+                                                Contact Us
+                                            </Link>
                                         </div>
                                     </div>
                                     <div className="my-2 md:my-0 md:mx-2">
