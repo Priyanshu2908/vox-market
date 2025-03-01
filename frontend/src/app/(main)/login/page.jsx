@@ -4,7 +4,7 @@ import classes from './login.module.css'
 const LoginPage = () => {
 
   return (
-    <div className="mt-7 w-fit mx-auto bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-neutral-900 dark:border-neutral-700">
+    <div className="mt-7 w-[30%] py-[5%] mx-auto bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-neutral-900 dark:border-neutral-700">
     <div className="p-4 sm:p-7">
       <div className="text-center">
         <h1 className="block text-2xl font-bold text-gray-800 dark:text-white">
