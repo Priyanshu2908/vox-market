@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const url = 'mongodb+srv://PriyanshuChaubey29:Priyanshu2908@cluster0.mjm3gew.mongodb.net/voxMarket?retryWrites=true&w=majority'
+const url = 'mongodb+srv://PriyanshuChaubey_29:Priyanshu2908@voxmarket.ualeh.mongodb.net/voxMarket?retryWrites=true&w=majority&appName=voxmarket'
 
 mongoose.connect(url,)
 .then((result) => {
