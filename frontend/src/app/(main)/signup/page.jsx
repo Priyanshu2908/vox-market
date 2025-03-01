@@ -1,4 +1,4 @@
- 'use client'
+'use client'
 import { IconLoader3, IconSend2 } from '@tabler/icons-react';
 import axios from 'axios';
 import { useFormik } from 'formik';
