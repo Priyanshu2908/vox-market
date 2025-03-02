@@ -1,6 +1,5 @@
-const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs'); // For hashing passwords
-const { Schema } = mongoose;
+const { Schema, model } = require('../connection');
 
 // Define the user schema
 const userSchema = new Schema(
@@ -51,7 +50,7 @@ const userSchema = new Schema(
     },
     orders: [
       {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'Order', // Reference to the Order model
       },
     ],
@@ -90,6 +89,5 @@ userSchema.methods.isValidPassword = async function (password) {
 };
 
 // Create the User model based on the schema
-const User = mongoose.model('User', userSchema);
 
-module.exports = User;
+module.exports = model('users', userSchema);
