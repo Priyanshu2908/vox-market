@@ -252,7 +252,7 @@ const Footer = () => {
           {/* nav - end */}
         </div>
         <div className="border-t py-8 text-center text-sm text-gray-400">
-          © 2021 - Present Flowrift. All rights reserved.
+          © 2025 - QuicKart . All rights reserved.
         </div>
       </footer>
     </div >
