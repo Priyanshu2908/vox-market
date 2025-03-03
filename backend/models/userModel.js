@@ -26,34 +26,6 @@ const userSchema = new Schema(
       type: String,
       match: /^[+]?[0-9]{10,15}$/, // Basic phone number validation
     },
-    shippingAddress: {
-      street: {
-        type: String,
-        required: true,
-      },
-      city: {
-        type: String,
-        required: true,
-      },
-      state: {
-        type: String,
-        required: true,
-      },
-      postalCode: {
-        type: String,
-        required: true,
-      },
-      country: {
-        type: String,
-        required: true,
-      },
-    },
-    orders: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Order', // Reference to the Order model
-      },
-    ],
     isAdmin: {
       type: Boolean,
       default: false, // To distinguish between normal users and admin users
