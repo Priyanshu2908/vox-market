@@ -1,3 +1,4 @@
+'use client'
 import Link from 'next/link'
 import React from 'react'
 
@@ -26,7 +27,7 @@ const Navbar = () => {
         {/* logo - end */}
         {/* nav - start */}
         <nav className="hidden gap-12 lg:flex 2xl:ml-16">
-          <Link href="/browse-product" className="text-lg font-semibold text-indigo-500">
+          <Link href="#" className="text-lg font-semibold text-indigo-500">
             Home
           </Link>
           <a
