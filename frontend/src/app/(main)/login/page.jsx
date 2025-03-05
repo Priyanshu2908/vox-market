@@ -3,7 +3,7 @@
 import axios from 'axios';
 import { useFormik } from 'formik';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import {useRouter} from 'next/navigation';
 import React from 'react';
 import toast from 'react-hot-toast';
 import * as Yup from 'yup';
@@ -13,6 +13,7 @@ const LoginSchema = Yup.object().shape({
 });
 
 const Login = () => {
+  const router = useRouter();
   // initializing Formik
   const loginForm = useFormik({
     initialValues: {
@@ -35,23 +36,7 @@ const Login = () => {
           setSubmitting(false);
 
         });
-      axios.defaults.withCredentials = true;
-      const handleSubmit = (e) => {
-        e - preventDefault()
-        axios.post('http://localhost:5000/login', { email, password })
-          .then(res => {
-            console.log(res)
-            if (res.data.Login) {
-              navigate("/home")
-            }
-            else {
-              navigate("/")
-            }
-          })
-          .catch(err => {
-            console.log(err)
-          })
-      }
+      
 
 
     },
