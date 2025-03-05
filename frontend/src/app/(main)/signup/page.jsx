@@ -2,6 +2,7 @@
 import { IconLoader3, IconSend2 } from '@tabler/icons-react';
 import axios from 'axios';
 import { useFormik } from 'formik';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import toast from 'react-hot-toast';
@@ -64,12 +65,12 @@ const Signup = () => {
             </h1>
             <p className="mt-2 text-sm text-gray-600 dark:text-neutral-400">
               Already have an account?
-              <a
+              <Link
                 className="text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium dark:text-blue-500"
-                href="../examples/html/signin.html"
+                href="/login"
               >
                 Sign in here
-              </a>
+              </Link>
             </p>
           </div>
           <div className="mt-5">
