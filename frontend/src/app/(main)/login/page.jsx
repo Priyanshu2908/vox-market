@@ -2,6 +2,7 @@
 import { IconLoader3, IconSend2 } from '@tabler/icons-react';
 import axios from 'axios';
 import { useFormik } from 'formik';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import toast from 'react-hot-toast';
@@ -70,6 +71,13 @@ const Login = () => {
           </h1>
           <br />
           <br />  
+          <Link
+              className="text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium dark:text-blue-500"
+              href="signup"
+            >
+              Sign up here
+            </Link>
+
           
           {/* Form */}
           <form onSubmit={loginForm.handleSubmit} >
