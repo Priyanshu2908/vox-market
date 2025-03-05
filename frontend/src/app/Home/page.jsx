@@ -1,7 +1,8 @@
 'use client'
 import React from 'react'
 
-const page = () => {
+
+const home = () => {
   return (
     <>
       {/* hero - start */}
@@ -452,4 +453,4 @@ const page = () => {
   )
 }
 
-export default page;
+export default home;
