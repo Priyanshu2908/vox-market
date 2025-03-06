@@ -12,6 +12,7 @@ const page = () => {
                 <div className="space-y-4">
                     <Link href="/login" className="block w-full bg-blue-500 text-white py-3 rounded-xl text-lg font-semibold hover:bg-blue-600 transition">User Login</Link>
                     <Link href="/seller-login" className="block w-full bg-green-500 text-white py-3 rounded-xl text-lg font-semibold hover:bg-green-600 transition">Seller Login</Link>
+                    <Link href="/admin/adminlogin" className="block w-full bg-red-500 text-white py-3 rounded-xl text-lg font-semibold hover:bg-green-600 transition">Admin Login</Link>
                 </div>
             </div>
         </div>
