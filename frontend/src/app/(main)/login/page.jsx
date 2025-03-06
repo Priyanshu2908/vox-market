@@ -3,7 +3,7 @@
 import axios from 'axios';
 import { useFormik } from 'formik';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import {useRouter} from 'next/navigation';
 import React from 'react';
 import toast from 'react-hot-toast';
 import * as Yup from 'yup';
@@ -36,23 +36,7 @@ const Login = () => {
           setSubmitting(false);
 
         });
-      axios.defaults.withCredentials = true;
-      const handleSubmit = (e) => {
-        e - preventDefault()
-        axios.post('http://localhost:5000/login', { email, password })
-          .then(res => {
-            console.log(res)
-            if (res.data.Login) {
-              navigate("/home")
-            }
-            else {
-              navigate("/")
-            }
-          })
-          .catch(err => {
-            console.log(err)
-          })
-      }
+      
 
 
     },
@@ -65,16 +49,16 @@ const Login = () => {
       <div className="p-4 sm:p-7">
         <div className="text-center">
           <h1 className="block text-2xl font-bold text-gray-800 dark:text-white">
-            Sign in
+            Login
           </h1>
           <br />
           <br />
           <Link
-            className="text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium dark:text-blue-500"
-            href="signup"
-          >
-            Sign up here
-          </Link>
+              className="text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium dark:text-blue-500"
+              href="/signup"
+            >
+              Sign up here
+            </Link>
 
 
           {/* Form */}

@@ -1,174 +1,141 @@
-// sellerRouter.js
 const express = require('express');
-const Seller = require('../models/seller'); // Assuming you have a Seller model
-const Product = require('../models/product'); // Assuming you have a Product model
-const Order = require('../models/order'); // Assuming you have an Order model
-const bcrypt = require('bcryptjs');
+const Model = require('../models/sellerModel');
+
+
 const router = express.Router();
 
-// Middleware to validate seller data
-const validateSeller = (req, res, next) => {
-  const { name, email, password, shopName } = req.body;
-  if (!name || !email || !password || !shopName) {
-    return res.status(400).json({ message: 'All fields are required' });
-  }
-  next();
-};
+const jwt = require('jsonwebtoken');
+const verifyToken = require('../middlewares/verifyToken');
+require('dotenv').config();
 
-// Register a new seller
-router.post('/register', validateSeller, async (req, res) => {
-  const { name, email, password, shopName } = req.body;
+router.post('/register', (req, res) => {
+    console.log(req.body);
 
-  try {
-    const existingSeller = await Seller.findOne({ email });
-    if (existingSeller) {
-      return res.status(400).json({ message: 'Seller already exists' });
-    }
+    new Model(req.body).save()
+        .then((result) => {
+            res.status(200).json(result);
+        }).catch((err) => {
+            res.status(500).json(err);
+        });
 
-    // Hash the password before saving to the database
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const newSeller = new Seller({
-      name,
-      email,
-      password: hashedPassword,
-      shopName,
-    });
-
-    await newSeller.save(); // Save the seller to the database
-    res.status(201).json({ message: 'Seller registered successfully', seller: newSeller });
-  } catch (err) {
-    res.status(500).json({ message: 'Failed to register seller', error: err });
-  }
 });
 
-// Seller login
-router.post('/login', async (req, res) => {
-  const { email, password } = req.body;
+//getall
+router.get('/getall', (req, res) => {
 
-  try {
-    const seller = await Seller.findOne({ email });
-    if (!seller) {
-      return res.status(400).json({ message: 'Seller not found' });
-    }
+    Model.find()
+        .then((result) => {
+            res.status(200).json(result);
 
-    const isMatch = await bcrypt.compare(password, seller.password);
-    if (!isMatch) {
-      return res.status(400).json({ message: 'Invalid credentials' });
-    }
+        }).catch((err) => {
+            console.log(err);
+            res.status(500).json(err);
 
-    // Return seller data excluding the password
-    res.status(200).json({
-      message: 'Login successful',
-      seller: { id: seller._id, name: seller.name, email: seller.email, shopName: seller.shopName },
-    });
-  } catch (err) {
-    res.status(500).json({ message: 'Login failed', error: err });
-  }
+        });
+
+
 });
 
-// Get seller profile
-router.get('/profile/:id', async (req, res) => {
-  const { id } = req.params;
+// : denotes url parameter
+router.get('/getbycity/:city', (req, res) => {
+    console.log(req.params.city);
+    Model.find({ city: req.params.city })
+        .then((result) => {
+            res.status(200).json(result);
 
-  try {
-    const seller = await Seller.findById(id);
-    if (!seller) {
-      return res.status(404).json({ message: 'Seller not found' });
-    }
-    res.status(200).json(seller);
-  } catch (err) {
-    res.status(500).json({ message: 'Failed to retrieve seller profile', error: err });
-  }
+        }).catch((err) => {
+            console.log(err);
+            res.status(500).json(err);
+
+        });
+
 });
 
-// Update seller profile
-router.put('/profile/:id', async (req, res) => {
-  const { id } = req.params;
-  const { name, email, shopName } = req.body;
+// email
+router.get('/getbyemail/:email', (req, res) => {
+    console.log(req.params.email);
+    Model.findOne({ email: req.params.email })
+        .then((result) => {
+            res.status(200).json(result);
 
-  try {
-    const updatedSeller = await Seller.findByIdAndUpdate(
-      id,
-      { name, email, shopName },
-      { new: true }
-    );
+        }).catch((err) => {
+            console.log(err);
+            res.status(500).json(err);
 
-    if (!updatedSeller) {
-      return res.status(404).json({ message: 'Seller not found' });
-    }
+        });
 
-    res.status(200).json({ message: 'Seller profile updated', seller: updatedSeller });
-  } catch (err) {
-    res.status(500).json({ message: 'Failed to update seller profile', error: err });
-  }
+})
+
+
+//getbyid
+router.get('/getbyid/:id', (req, res) => {
+    Model.findById(req.params.id)
+        .then((result) => {
+            res.status(200).json(result);
+        }).catch((err) => {
+            console.log(err);
+            res.status(500).json(err);
+        });
 });
 
-// Get all products of a seller
-router.get('/:id/products', async (req, res) => {
-  const { id } = req.params;
+//update
+router.put('/update/:id', (req, res) => {
 
-  try {
-    const products = await Product.find({ seller: id }); // Fetch products by seller ID
-    res.status(200).json(products);
-  } catch (err) {
-    res.status(500).json({ message: 'Failed to retrieve seller products', error: err });
-  }
+    Model.findByIdAndUpdate(req.params.id, req.body, { new: true })
+
+        .then((result) => {
+            res.status(200).json(result);
+
+        }).catch((err) => {
+            console.log(err);
+            res.status(500).json(err);
+        });
+
 });
 
-// Get all orders for a seller
-router.get('/:id/orders', async (req, res) => {
-  const { id } = req.params;
-
-  try {
-    const orders = await Order.find({ seller: id }); // Fetch orders by seller ID
-    if (!orders || orders.length === 0) {
-      return res.status(404).json({ message: 'No orders found for this seller' });
-    }
-    res.status(200).json(orders);
-  } catch (err) {
-    res.status(500).json({ message: 'Failed to retrieve seller orders', error: err });
-  }
+//delete
+router.delete('/delete/:id', (req, res) => {
+    Model.findByIdAndDelete(req.params.id)
+        .then((result) => {
+            res.status(200).json(result);
+        }).catch((err) => {
+            console.log(err);
+            res.status(500).json(err);
+        });
 });
 
-// Update product details
-router.put('/:id/products/:productId', async (req, res) => {
-  const { id, productId } = req.params;
-  const { name, description, price, stock, category } = req.body;
 
-  try {
-    const product = await Product.findOne({ _id: productId, seller: id });
-    if (!product) {
-      return res.status(404).json({ message: 'Product not found or you do not have permission to update it' });
-    }
+router.post('/authenticate', (req, res) => {
+    Model.findOne(req.body)
+        .then((result) => {
+            if (result) {
+                // generate token
 
-    const updatedProduct = await Product.findByIdAndUpdate(
-      productId,
-      { name, description, price, stock, category },
-      { new: true }
-    );
+                const { _id, name, email } = result;
+                const payload = { _id, name, email }
 
-    res.status(200).json({ message: 'Product updated successfully', product: updatedProduct });
-  } catch (err) {
-    res.status(500).json({ message: 'Failed to update product', error: err });
-  }
-});
+                jwt.sign(
+                    payload,
+                    process.env.JWT_SECRET,
+                    { expiresIn: '1d' },
+                    (err, token) => {
+                        if (err) {
+                            console.log(err);
+                            res.status(500).json(err);
+                        } else {
+                            res.status(200).json({ token });
+                        }
+                    }
+                )
 
-// Delete a product
-router.delete('/:id/products/:productId', async (req, res) => {
-  const { id, productId } = req.params;
+            } else {
+                res.status(401).json({ message: 'Invalid Id or Password' })
+            }
+        }).catch((err) => {
+            console.log(err);
+            res.status(500).json(err);
 
-  try {
-    const product = await Product.findOne({ _id: productId, seller: id });
-    if (!product) {
-      return res.status(404).json({ message: 'Product not found or you do not have permission to delete it' });
-    }
-
-    await Product.findByIdAndDelete(productId); // Delete the product
-    res.status(200).json({ message: 'Product deleted successfully' });
-  } catch (err) {
-    res.status(500).json({ message: 'Failed to delete product', error: err });
-  }
+        });
 });
 
 module.exports = router;
