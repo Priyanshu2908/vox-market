@@ -49,13 +49,13 @@ const Login = () => {
       <div className="p-4 sm:p-7">
         <div className="text-center">
           <h1 className="block text-2xl font-bold text-gray-800 dark:text-white">
-            Sign in
+            Login
           </h1>
           <br />
           <br />  
           <Link
               className="text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium dark:text-blue-500"
-              href="signup"
+              href="/signup"
             >
               Sign up here
             </Link>

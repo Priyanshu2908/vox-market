@@ -1,66 +1,191 @@
-'use client';
-import Button from "@/components/Button";
-import TextInput from "@/components/TextInput";
-import { useState } from "react";
+'use client'
+// import { IconLoader3, IconSend2 } from '@tabler/icons-react';
+import axios from 'axios';
+import { useFormik } from 'formik';
+import Link from 'next/link';
+import {useRouter} from 'next/navigation';
+import React from 'react';
+import toast from 'react-hot-toast';
+import * as Yup from 'yup';
 
-const  SellerSignUp = () => {
-  const [formData, setFormData] = useState({ name: "", email: "", password: "" });
+const LoginSchema = Yup.object().shape({
+  email: Yup.string().email('Invalid email').required('Required'),
+});
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+const  SellerLogin = () => {
+  const router = useRouter();
+  // initializing Formik
+  const loginForm = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    onSubmit: (values, { resetForm, setSubmitting }) => {
+      console.log(values);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Seller Data:", formData);
-  };
+      axios.post('http://localhost:5000/user/authenticate', values) // post request to login 
+        .then((result) => {
+          toast.success('Login Successful')
+          resetForm(); // reset form
+          router.push('/seller/profile');// redirect to dashboard 
+          console.log(result.data?.token);
+          localStorage.setItem('token', result.data?.token); // save token in local storage
+        }).catch((err) => {
+          console.log(err);
+          toast.error('Login Failed');
+          setSubmitting(false);
+
+        });
+      
+
+
+    },
+    validationSchema: LoginSchema
+
+  });
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
-      <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-4 text-center">Seller Sign Up</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-gray-600 mb-1">Full Name</label>
-            <TextInput
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              placeholder="Enter your name"
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-gray-600 mb-1">Email Address</label>
-            <TextInput
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Enter your email"
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-gray-600 mb-1">Password</label>
-            <TextInput
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="Create a password"
-              required
-            />
-          </div>
-          <Button type="submit" className="w-full">Sign Up</Button>
-        </form>
-        <p className="text-sm text-gray-600 text-center mt-4">
-          Already have an account? <a href="/login" className="text-blue-600">Log in</a>
-        </p>
+    <div className="my-7 w-1/3 mx-auto bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-neutral-900 dark:border-neutral-700 ">
+      <div className="p-4 sm:p-7">
+        <div className="text-center">
+          <h1 className="block text-2xl font-bold text-gray-800 dark:text-white">
+            Seller Login
+          </h1>
+          <br />
+          <br />  
+          <Link
+              className="text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium dark:text-blue-500"
+              href="/seller-signup"
+            >
+              Sign up here
+            </Link>
+
+          
+          {/* Form */}
+          <form onSubmit={loginForm.handleSubmit} >
+            <div className="grid gap-y-4">
+              {/* Form Group */}
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block text-sm mb-2 dark:text-white"
+                >
+                  Email address
+                </label>
+                <div className="relative">
+                  <input
+                    type="email"
+                    id="email"
+                    onChange={loginForm.handleChange}
+                    value={loginForm.values.email}
+                    className="py-3 border px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                    required=""
+                    aria-describedby="email-error"
+                  />
+                  <div className="hidden absolute inset-y-0 end-0 pointer-events-none pe-3">
+                    <svg
+                      className="size-5 text-red-500"
+                      width={16}
+                      height={16}
+                      fill="currentColor"
+                      viewBox="0 0 16 16"
+                      aria-hidden="true"
+                    >
+                      <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
+                    </svg>
+                  </div>
+                </div>
+                {
+                  (loginForm.touched.email && loginForm.errors.email) &&
+                  (
+                    <p className=" text-xs text-red-600 mt-2" id="email-error">
+                      {loginForm.errors.email}
+                    </p>
+
+                  )
+                }
+              </div>
+              {/* End Form Group */}
+              {/* Form Group */}
+              <div>
+                <div className="flex justify-between items-center">
+                  <label
+                    htmlFor="password"
+                    className="block text-sm mb-2 dark:text-white"
+                  >
+                    Password
+                  </label>
+                  <a
+                    className="inline-flex  items-center gap-x-1 text-sm text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium dark:text-blue-500"
+                    href="../examples/html/recover-account.html"
+                  >
+                    Forgot password?
+                  </a>
+                </div>
+                <div className="relative">
+                  <input
+                    type="password"
+                    onChange={loginForm.handleChange}
+                    value={loginForm.values.password}
+                    name="password"
+                    className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 border dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                    required=""
+                    aria-describedby="password-error"
+                  />
+                  <div className="hidden absolute inset-y-0 end-0 pointer-events-none pe-3">
+                    <svg
+                      className="size-5 text-red-500"
+                      width={16}
+                      height={16}
+                      fill="currentColor"
+                      viewBox="0 0 16 16"
+                      aria-hidden="true"
+                    >
+                      <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
+                    </svg>
+                  </div>
+                </div>
+                <p
+                  className="hidden text-xs text-red-600 mt-2"
+                  id="password-error"
+                >
+                  8+ characters required
+                </p>
+              </div>
+              {/* End Form Group */}
+              {/* Checkbox */}
+              <div className="flex items-center">
+                <div className="flex">
+                  <input
+                    id="remember-me"
+                    name="remember-me"
+                    type="checkbox"
+                    className="shrink-0  mt-0.5 border-gray-200 rounded text-blue-600 focus:ring-blue-500 dark:bg-neutral-800 dark:border-neutral-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
+                  />
+                </div>
+                <div className="ms-3">
+                  <label
+                    htmlFor="remember-me"
+                    className="text-sm dark:text-white"
+                  >
+                    Remember me
+                  </label>
+                </div>
+              </div>
+              {/* End Checkbox */}
+              <button
+                type="submit"
+                className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
+              >
+                Sign in
+              </button>
+            </div>
+          </form>
+          {/* End Form */}
+        </div>
       </div>
     </div>
   );
-}
+};
 
-export default SellerSignUp;
+export default SellerLogin;
