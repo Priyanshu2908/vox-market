@@ -13,6 +13,7 @@ const LoginSchema = Yup.object().shape({
 });
 
 const Login = () => {
+  const router = useRouter();
   // initializing Formik
   const loginForm = useFormik({
     initialValues: {
@@ -67,15 +68,15 @@ const Login = () => {
             Sign in
           </h1>
           <br />
-          <br />  
+          <br />
           <Link
-              className="text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium dark:text-blue-500"
-              href="signup"
-            >
-              Sign up here
-            </Link>
+            className="text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium dark:text-blue-500"
+            href="signup"
+          >
+            Sign up here
+          </Link>
 
-          
+
           {/* Form */}
           <form onSubmit={loginForm.handleSubmit} >
             <div className="grid gap-y-4">

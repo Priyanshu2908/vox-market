@@ -1,10 +1,12 @@
 'use client'
+import Navbar from '@/components/Navbar';
 import React from 'react'
 
 
 const home = () => {
   return (
     <>
+      <Navbar/>
       {/* hero - start */}
       <div className="bg-white pb-6 sm:pb-8 lg:pb-12">
 

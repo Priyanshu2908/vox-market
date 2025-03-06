@@ -30,12 +30,12 @@ const Navbar = () => {
           <Link href="/" className="text-lg font-semibold text-indigo-500">
             Home
           </Link>
-          <a
-            href="#"
+          <Link
+            href="/browse"
             className="text-lg font-semibold text-gray-600 transition duration-100 hover:text-indigo-500 active:text-indigo-700"
           >
             Collections
-          </a>
+          </Link>
           <a
             href="#"
             className="text-lg font-semibold text-gray-600 transition duration-100 hover:text-indigo-500 active:text-indigo-700"
