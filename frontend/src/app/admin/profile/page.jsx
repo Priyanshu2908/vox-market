@@ -41,8 +41,27 @@ const AdminProfilePage = () => {
                   <p className="py-4 text-lg text-gray-500 2xl:py-8 md:py-6 2xl:pr-5">
                     Welcome to the admin dashboard. You can manage users, sellers and orders. You can also view products.
                   </p>
-                 <div className=" ">
-                    
+                 <div className="grid grid-cols-4 ">
+                    <div className="">
+                        <a href="/admin/manage-user"className="px-3 py-3 text-lg tracking-wider text-white bg-blue-500 rounded-lg hover:bg-blue-600 group">
+                            <span>Manage User</span>{" "}
+                        </a>
+                    </div>
+                    <div className="">
+                        <a href="/admin/manage-seller"className="px-3 py-3 text-lg tracking-wider text-white bg-blue-500 rounded-lg  hover:bg-blue-600 group">
+                            <span>Manage Seller</span>{" "}
+                        </a>
+                    </div>
+                    <div className="">
+                        <a href="/admin/manage-order"className="px-3 py-3 text-lg tracking-wider text-white bg-blue-500 rounded-lg  hover:bg-blue-600 group">
+                            <span>Manage Order</span>{" "}
+                        </a>
+                    </div>
+                    <div className="">
+                        <a href="/admin/view-order/id"className="px-3 py-3 text-lg tracking-wider text-white bg-blue-500 rounded-lg hover:bg-blue-600 group">
+                            <span>View Orders</span>{" "}
+                        </a>
+                    </div>
                  </div>
                 </div>
                 <div className="pb-10 overflow-hidden md:p-10 lg:p-0 sm:pb-0">
