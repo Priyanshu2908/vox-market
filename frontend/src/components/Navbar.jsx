@@ -1,8 +1,11 @@
 'use client'
 import Link from 'next/link'
 import React from 'react'
+import { useAuth0 } from '@auth0/auth0-react'
 
 const Navbar = () => {
+  const{user, isAuthenticated} = useAuth0();
+
   return (
     <header className="mb-8 border-b">
       <div className="mx-auto flex max-w-screen-2xl items-center justify-between px-4 md:px-8">
@@ -74,6 +77,9 @@ const Navbar = () => {
               Wishlist
             </span>
           </a>
+          {
+            isAuthenticated && <h1>(user.name)</h1>
+          }
           <Link
             href="/user/profile"
             className="flex h-12 w-12 flex-col items-center justify-center gap-1.5 transition duration-100 hover:bg-gray-100 active:bg-gray-200 sm:h-20 sm:w-20 md:h-24 md:w-24"

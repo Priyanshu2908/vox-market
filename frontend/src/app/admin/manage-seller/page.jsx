@@ -20,17 +20,13 @@ const ManageSeller = () => {
         fetchsellerData();
     }, []);
 
-    const deleteseller = (id) => {
-        axios.delete(`http://localhost:5000/seller/delete/ ${id}`)
-            .then((result) => {
-                toast.success('seller deleted successfully');
-                fetchsellerData();
-            }).catch((err) => {
-                console.log(err);
-                toast.error('Falied to delete seller');
-
-            });
-    }
+    const deleteseller = async (id) => {
+            console.log(id);
+            const res = await axios.delete(`http://localhost:5000/seller/delete/${id}`);
+            console.log(res.data);
+            toast.success('Seller deleted');
+            fetchsellerData();
+        }
 
     return (
         <div>

@@ -35,6 +35,7 @@ router.get('/getall', (req, res) => {
 
 });
 
+
 // : denotes url parameter
 router.get('/getbycity/:city', (req, res) => {
     console.log(req.params.city);

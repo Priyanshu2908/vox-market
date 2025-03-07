@@ -1,37 +1,67 @@
+'use client';
+import { useRouter } from 'next/navigation';
 import React from 'react';
+import { BrowserRouter as Router, } from 'react-router-dom';
 
-const AdminProfile = () => {
-    const admin = {
-        name: 'Admin User',
-        email: 'admin123@gmail.com',
-        role: 'Administrator',
-        password: 'admin123',
+const AdminProfilePage = () => {
+    
+        const router = useRouter();
 
-    };
-
+        const resetForm = () => {
+            // Add form reset logic here
+            console.log('Form reset');
+        };
+    const handleClick = (e) => {
+        e.preventDefault();
+        resetForm(); // reset form
+        router.push('/admin/manage-user'); // redirect to dashboard
+    }
+    const handleManageSellersClick = (e) => {
+        e.preventDefault();
+        resetForm(); // reset form
+        router.push('/admin/manage-seller'); // redirect to manage sellers
+    }
+    
     return (
-        <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-            <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-                <h2 className="text-2xl font-bold mb-4">Admin Profile</h2>
-                <div className="mb-4">
-                    <label className="block text-gray-700">Name:</label>
-                    <p className="text-gray-900">{admin.name}</p>
+       
+            <div className=" h-full bg-white  ">
+              <div className="container  flex justify-center     mx-auto relative md:px-0 px-4 md:my-10 bg-[#111111]  rounded-none md:rounded-xl overflow-hidden">
+                {/* Nav */}
+                
+              </div>
+              <div
+                className="items-center mt-10 md:mt-5 w-10/12 grid-cols-2 mx-auto overflow-x-hidden lg:grid md:py-14 lg:py-24 xl:py-14 lg:mt-3 xl:mt-5"
+                data-aos="fade-right"
+                data-aos-duration={800}
+              >
+                <div className="pr-2 md:mb-14 py-14 md:py-0">
+                  <h1 className="text-3xl font-semibold text-blue-900 xl:text-5xl lg:text-3xl">
+                    Hello Admin
+                  </h1>
+                  <p className="py-4 text-lg text-gray-500 2xl:py-8 md:py-6 2xl:pr-5">
+                    Welcome to the admin dashboard. You can manage users, sellers and orders. You can also view products.
+                  </p>
+                 <div className=" ">
+                    
+                 </div>
                 </div>
-                <div className="mb-4">
-                    <label className="block text-gray-700">Email:</label>
-                    <p className="text-gray-900">{admin.email}</p>
+                <div className="pb-10 overflow-hidden md:p-10 lg:p-0 sm:pb-0">
+                  <img
+                    id="heroImg1"
+                    className="transition-all duration-300 ease-in-out hover:scale-105 lg:w-full sm:mx-auto sm:w-4/6 sm:pb-12 lg:pb-0"
+                    src="https://bootstrapmade.com/demo/templates/FlexStart/assets/img/hero-img.png"
+                    alt="Awesome hero page image"
+                    width={500}
+                    height={488}
+                  />
                 </div>
-                <div className="mb-4">
-                    <label className="block text-gray-700">Role:</label>
-                    <p className="text-gray-900">{admin.role}</p>
-                </div>
-                <div className="mb-4">
-                    <label className="block text-gray-700">Password:</label>
-                    <p className="text-gray-900">{admin.password}</p>
-                </div>
+              </div>
             </div>
-        </div>
     );
-};
+}
+   
 
-export default AdminProfile;
+
+    
+
+export default AdminProfilePage;

@@ -20,16 +20,12 @@ const Manageuser = () => {
         fetchuserData();
     }, []);
 
-    const deleteuser = (id) => {
-        axios.delete(`http://localhost:5000/user/delete/ ${id}`)
-            .then((result) => {
-                toast.success('user deleted successfully');
-                fetchuserData();
-            }).catch((err) => {
-                console.log(err);
-                toast.error('Falied to delete user');
-
-            });
+    const deleteuser = async (id) => {
+        console.log(id);
+        const res = await axios.delete(`http://localhost:5000/user/delete/${id}`);
+        console.log(res.data);
+        toast.success('User deleted');
+        fetchuserData();
     }
 
     return (
