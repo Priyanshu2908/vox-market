@@ -25,7 +25,9 @@ const ProductSchema = Yup.object().shape({
 });
 
 const AddProduct = () => {
-  
+
+  const token = localStorage.getItem('seller-token');
+
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -33,11 +35,14 @@ const AddProduct = () => {
       price: '',
       image: ''
     },
-    
     onSubmit: (values, { setSubmitting }) => {
       console.log(values);
 
-      axios.post('http://localhost:5001/product/add', values)
+      axios.post(`${process.env.NEXT_PUBLIC_API_URL}/product/add`, values, {
+        headers: {
+          'x-auth-token': token
+        }
+      })
         .then((result) => {
           toast.success('Product added successfully');
           setSubmitting(false);
@@ -47,10 +52,6 @@ const AddProduct = () => {
         });
     }
   });
-
-  
-
-  
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
@@ -105,7 +106,7 @@ const AddProduct = () => {
         </button>
       </form>
     </div>
-    );
+  );
 };
 
 

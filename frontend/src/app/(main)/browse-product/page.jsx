@@ -6,24 +6,19 @@ import { useState } from 'react';
 
 
 const browseproduct = () => {
-    
-    const [products, setproductList,] = useState([]);
-    
-        const fetchproductData = async () => {
-            const res = await axios.get('http://localhost:5000/product/getall');
-            console.table(res.data);
-            setproductList(res.data);
-        }
-    
-        useEffect(() => {
-            fetchproductData();
-        }, []);
-    
-       
 
-       
-        // Add more products as needed
-    
+    const [products, setproductList,] = useState([]);
+
+    const fetchproductData = async () => {
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/product/getall`);
+        console.table(res.data);
+        setproductList(res.data);
+    }
+
+    useEffect(() => {
+        fetchproductData();
+    }, []);
+    // Add more products as needed
 
     return (
         <div className="container mx-auto p-4">

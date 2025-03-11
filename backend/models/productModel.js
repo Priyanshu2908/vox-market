@@ -1,8 +1,6 @@
 
 // Import the required modules
-const { Schema, model } = require('../connection');
-
-
+const { Schema, model, Types } = require('../connection');
 
 // Define the product schema
 const productSchema = new Schema(
@@ -14,7 +12,7 @@ const productSchema = new Schema(
       minlength: 3,
       maxlength: 100,
     },
-    seller: { type: mongoose.Schema.Types.ObjectId, ref: 'sellerdata' },
+    seller: { type: Types.ObjectId, ref: 'sellerdata' },
     description: {
       type: String,
       required: true,
@@ -22,7 +20,7 @@ const productSchema = new Schema(
       minlength: 10,
       maxlength: 500,
     },
-   
+
     price: {
       type: Number,
       required: true,
@@ -30,9 +28,9 @@ const productSchema = new Schema(
     },
     imageUrl: {
       type: String,
-      
+
     },
-    
+
   },
   { timestamps: true } // Automatically adds createdAt and updatedAt fields
 );

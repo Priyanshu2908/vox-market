@@ -1,5 +1,6 @@
 const express = require('express');
 const Model = require('../models/productModel');
+const verifyToken = require('../middlewares/verifyToken');
 
 
 const router = express.Router();
@@ -7,7 +8,8 @@ const router = express.Router();
 
 
 //add
-router.post('/add', (req, res) => {
+router.post('/add', verifyToken, (req, res) => {
+    req.body.seller = req.user._id;
     const model = new Model(req.body);
     model.save()
         .then((result) => {
