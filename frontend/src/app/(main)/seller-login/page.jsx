@@ -29,7 +29,7 @@ const  SellerLogin = () => {
           resetForm(); // reset form
           router.push('/seller/profile');// redirect to dashboard 
           console.log(result.data?.token);
-          localStorage.setItem('token', result.data?.token); // save token in local storage
+          localStorage.setItem('seller-token', result.data?.token); // save token in local storage
         }).catch((err) => {
           console.log(err);
           toast.error('Login Failed');

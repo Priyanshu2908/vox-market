@@ -11,6 +11,7 @@ const productSchema = new mongoose.Schema(
       minlength: 3,
       maxlength: 100,
     },
+    seller: { type: mongoose.Schema.Types.ObjectId, ref: 'sellerdata' },
     description: {
       type: String,
       required: true,

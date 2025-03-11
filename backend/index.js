@@ -9,7 +9,7 @@ const app = express();
 const port = 5000;
 
 // middleware
-app.use(cors({ origin: ['http://localhost:3000'] }));
+app.use(cors({ origin: '*' }));
 app.use(express.json());
 app.use('/user', userRouter);
 app.use('/seller', sellerRouter);
