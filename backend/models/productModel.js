@@ -1,8 +1,11 @@
-const mongoose = require('mongoose');
+
+// Import the required modules
+const { Schema, model } = require('../connection');
+
 
 
 // Define the product schema
-const productSchema = new mongoose.Schema(
+const productSchema = new Schema(
   {
     name: {
       type: String,
@@ -14,51 +17,29 @@ const productSchema = new mongoose.Schema(
     description: {
       type: String,
       required: true,
+      trim: true,
       minlength: 10,
-      maxlength: 1000,
+      maxlength: 500,
     },
+   
     price: {
       type: Number,
       required: true,
       min: 0,
     },
-    stockQuantity: {
-      type: Number,
-      required: true,
-      min: 0,
-    },
-    category: {
-      type: String,
-      required: true,
-      enum: ['electronics', 'clothing', 'home', 'beauty', 'toys', 'sports'], // Example categories
-    },
     imageUrl: {
       type: String,
-      required: true,
-      validate: {
-        validator: function (v) {
-          return /^(ftp|http|https):\/\/[^ "]+$/.test(v); // Basic URL validation
-        },
-        message: 'Invalid image URL!',
-      },
+      
     },
-    isFeatured: {
-      type: Boolean,
-      default: false,
-    },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-    },
-    updatedAt: {
-      type: Date,
-      default: Date.now,
-    },
+    
   },
   { timestamps: true } // Automatically adds createdAt and updatedAt fields
 );
 
-// Create the Product model based on the schema
-const Product = mongoose.model('Product', productSchema);
 
-module.exports = Product;
+// Create the Product model based on the schema
+
+module.exports = model('products', productSchema);
+
+
+

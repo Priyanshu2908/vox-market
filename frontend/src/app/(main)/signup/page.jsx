@@ -40,7 +40,7 @@ const Signup = () => {
       // send values to backend
       // send a post request to backend
       axios.post('http://localhost:5000/user/add', value)
-      .then((result) => {
+      .then(() => {
         toast.success('User registered successfully');
         resetForm();
         router.push('/login');
