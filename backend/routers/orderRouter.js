@@ -1,8 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const Order = require('../models/order'); // Assuming the order model is in the models folder
-const User = require('../models/user'); // Assuming the user model is in the models folder
-const Product = require('../models/product'); // Assuming the product model is in the models folder
+
 
 const router = express.Router();
 
