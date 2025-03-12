@@ -23,7 +23,7 @@ const Login = () => {
     onSubmit: (values, { resetForm, setSubmitting }) => {
       console.log(values);
 
-      axios.get('http://localhost:5000/user/authenticate', values) // post request to login 
+      axios.get(`${process.env.NEXT_PUBLIC_API_URL}/user/authenticate`, values) // post request to login
         .then((result) => {
           toast.success('Login Successful')
           resetForm(); // reset form

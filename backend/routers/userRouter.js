@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 const verifyToken = require('../middlewares/verifyToken');
 require('dotenv').config();
 
-router.post('/add', (req, res) => {
+router.post('/register  ', (req, res) => {
     console.log(req.body);
 
     new Model(req.body).save()

@@ -23,11 +23,11 @@ const  SellerLogin = () => {
     onSubmit: (values, { resetForm, setSubmitting }) => {
       console.log(values);
 
-      axios.post('http://localhost:5000/user/authenticate', values) // post request to login 
+      axios.get(`${process.env.NEXT_PUBLIC_API_URL}/seller/authenticate`, values) // post request to login
         .then((result) => {
           toast.success('Login Successful')
           resetForm(); // reset form
-          router.push('/seller/profile');// redirect to dashboard 
+          router.push('/seller/add-product');// redirect to dashboard 
           console.log(result.data?.token);
           localStorage.setItem('seller-token', result.data?.token); // save token in local storage
         }).catch((err) => {
