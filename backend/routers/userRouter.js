@@ -105,7 +105,7 @@ router.delete('/delete/:id', (req, res) => {
 });
 
 
-router.post('/authenticate', (req, res) => {
+router.get('/authenticate', (req, res) => {
     Model.findOne(res.body)
         .then((result) => {
             if (result) {

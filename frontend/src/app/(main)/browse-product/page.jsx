@@ -10,7 +10,7 @@ const browseproduct = () => {
     const [products, setproductList,] = useState([]);
 
     const fetchproductData = async () => {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/product/getall`);
+        const res = await axios.get('http://localhost:5000/product/getall', value);
         console.table(res.data);
         setproductList(res.data);
     }
