@@ -39,7 +39,8 @@ const SellerSignup = () => {
 
       // send values to backend
       // send a post request to backend
-      axios.post('http://localhost:5000/seller/register', values)
+      axios.post(`${process.env.NEXT_PUBLIC_API_URL}/seller/register`, values)
+      
         .then((result) => {
           toast.success('Seller registered successfully');
           resetForm();

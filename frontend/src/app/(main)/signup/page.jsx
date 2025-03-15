@@ -39,7 +39,7 @@ const Signup = () => {
 
       // send values to backend
       // send a post request to backend
-      axios.post('http://localhost:5000/user/add', value)
+      axios.post(`${process.env.NEXT_PUBLIC_API_URL}/user/register`, value)
       .then(() => {
         toast.success('User registered successfully');
         resetForm();

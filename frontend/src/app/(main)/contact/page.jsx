@@ -31,7 +31,7 @@ onSubmit: (value, {resetForm,setSubmitting}) => {
 
   // send values to backend
   // send a post request to backend
-  axios.post('http://localhost:5000/contact/add', value)
+  axios.post(`${process.env.NEXT_PUBLIC_API_URL}/contact/add`, value)
   .then((result) => {
     toast.success('Form submitted successfully');
     resetForm();

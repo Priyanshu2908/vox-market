@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 const verifyToken = require('../middlewares/verifyToken');
 require('dotenv').config();
 
-router.post('/add', (req, res) => {
+router.post('/register  ', (req, res) => {
     console.log(req.body);
 
     new Model(req.body).save()
@@ -105,7 +105,7 @@ router.delete('/delete/:id', (req, res) => {
 });
 
 
-router.post('/authenticate', (req, res) => {
+router.get('/authenticate', (req, res) => {
     Model.findOne(res.body)
         .then((result) => {
             if (result) {
