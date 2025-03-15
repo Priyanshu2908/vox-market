@@ -243,7 +243,7 @@ const Signup = () => {
                   </label>
                   <div className="relative">
                     <input
-                      type="text"
+                      type="password"
                       id="confirmPassword"
                       onChange={signupForm.handleChange}
                       value={signupForm.values.confirmPassword}
