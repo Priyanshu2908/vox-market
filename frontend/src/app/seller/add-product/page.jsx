@@ -26,7 +26,29 @@ const ProductSchema = Yup.object().shape({
 
 const AddProduct = () => {
 
-  const token = localStorage.getItem('seller-token');
+  const [preview, setPreview] = React.useState('');
+  const token = typeof window !== 'undefined' ? localStorage.getItem('seller-token') : '';
+
+  const upload = (e) => {
+    const file = e.target.files[0];
+    const fd = new FormData();
+    fd.append('file', file);
+    fd.append('upload_preset', 'PRIYANSHU CHAUBEY')
+    fd.append('cloud_name', 'dyiomyslq')
+
+    axios.post('https://api.cloudinary.com/v1_1/dyiomyslq/image/upload', fd)
+      .then((result) => {
+        toast.success('file uploaded successfully');
+        console.log(result.data);
+        setPreview(result.data.url);
+        formik.setFieldValue('image', result.data.url);
+      }).catch((err) => {
+        console.log(err);
+        toast.error('failed to upload file');
+
+      });
+
+  }
 
   const formik = useFormik({
     initialValues: {
@@ -59,7 +81,7 @@ const AddProduct = () => {
         <h2 className="text-2xl font-bold mb-4">Add New Product</h2>
         <div className="mb-4">
           <input
-            type="text"
+
             name="name"
             className="w-full px-3 py-2 border rounded-lg"
             value={formik.values.name}
@@ -90,16 +112,17 @@ const AddProduct = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700">Product Image</label>
+          <label className="block text-gray-700">Image</label>
+          {/* <input type="file" onChange={upload} /> */}
           <input
             type="file"
-            name="image"
-            onChange={}
             className="w-full px-3 py-2 border rounded-lg"
-            required
+            onChange={upload}
           />
         </div>
-        <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">
+        {preview && <img src={preview} alt="preview" className="w-32 h-32 object-cover mt-2" />}
+
+        <button disabled={!formik.values.image} type="submit" className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 disabled:bg-blue-500/50">
           Add Product
         </button>
       </form>

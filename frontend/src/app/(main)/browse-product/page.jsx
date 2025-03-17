@@ -1,5 +1,6 @@
 'use client';
 import axios from 'axios';
+import Link from 'next/link';
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
@@ -25,11 +26,14 @@ const browseproduct = () => {
             <h1 className="text-2xl font-bold mb-4">Browse Products</h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {products.map(product => (
-                    <div key={product.id} className="border p-4 rounded-lg shadow-lg">
+                    <div key={product._id} className="border p-4 rounded-lg shadow-lg">
                         <img src={product.image} alt={product.name} className="w-full h-48 object-cover mb-4 rounded" />
                         <h2 className="text-xl font-semibold mb-2">{product.name}</h2>
                         <p className="text-gray-700 mb-2">{product.price}</p>
                         <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Add to Cart</button>
+                        <Link
+                            href={`/view-product/${product._id}`}
+                            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">View Product</Link>
                     </div>
                 ))}
             </div>
