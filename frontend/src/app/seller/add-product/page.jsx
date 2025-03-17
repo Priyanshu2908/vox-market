@@ -94,9 +94,7 @@ const AddProduct = () => {
           <input
             type="file"
             name="image"
-            onChange={(event) => {
-              formik.setFieldValue("image", event.currentTarget.files[0]);
-            }}
+            onChange={}
             className="w-full px-3 py-2 border rounded-lg"
             required
           />
