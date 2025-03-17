@@ -116,13 +116,15 @@ const AddProduct = () => {
         </div>
         <div className="mb-4">
           <label  className="block text-gray-700">Image</label>
+          <input type="file" onChange={upload} />
           <input
           id='imageUrl'
-            type="file"
+            type="text"
             name="image"
             className="w-full px-3 py-2 border rounded-lg"
-            onChange={upload}
-          />
+            onChange={formik.handleChange}
+            value={formik.values.image}
+        />
         </div>
           {preview && <img src={preview} alt="preview" className="w-32 h-32 object-cover mt-2" />}
           
