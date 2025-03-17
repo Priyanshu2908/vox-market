@@ -37,7 +37,7 @@ const AddProduct = () => {
 
     axios.post('https://api.cloudinary.com/v1_1/dyiomyslq/image/upload', fd)
         .then((result) => {
-            toast.success('file upload successfully');
+            toast.success('file uploaded successfully');
             console.log(result.data);
             setPreview(result.data.url);
             formik.setFieldValue('image', result.data.url);
