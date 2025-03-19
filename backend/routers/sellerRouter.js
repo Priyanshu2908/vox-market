@@ -117,7 +117,7 @@ router.get('/authenticate', (req, res) => {
                 jwt.sign(
                     payload,
                     process.env.JWT_SECRET,
-                    { expiresIn: '1d' },
+                    { expiresIn: '30d' },
                     (err, token) => {
                         if (err) {
                             console.log(err);
