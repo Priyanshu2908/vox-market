@@ -3,8 +3,9 @@ import React from 'react'
 
 const page = () => {
     return (
-
-        <div className="min-h-screen flex flex-col items-center justify-center bg-white p-6">
+        <div
+        className="min-h-screen flex flex-col items-center justify-center bg-cover bg-center p-6"
+        style={{ backgroundImage: "url('https://imgs.search.brave.com/SfCXjakS5ZZK2KtD3-OHYV_hOq7lQIpxL7OvANVj854/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vb3Jp/Z2luYWxzL2FkL2Zl/L2M2L2FkZmVjNjA2/MjA0MjZjNTNmOGIw/NWUwZTZiYTRiZWJl/LmpwZw')" }}>
             <div className="bg-white shadow-lg rounded-2xl p-10 text-center max-w-md w-full">
                 <h1 className="text-3xl font-bold mb-6">Welcome to Our QuicKart</h1>
                 <p className="text-gray-600 mb-8">Login as a User or a Seller to get started.</p>
