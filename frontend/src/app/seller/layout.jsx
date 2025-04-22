@@ -1,14 +1,13 @@
 import { Toaster } from "react-hot-toast";
+import Sidebar from "./sidebar";
 export default function SellerLayout({ children }) {
   return (
     <html lang="en" className="">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body>
         
         <Toaster position="top-right" />
         {children}
-      
+      <Sidebar />
       </body>
     </html>
   );

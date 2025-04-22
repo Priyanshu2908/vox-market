@@ -5,27 +5,15 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { toast } from 'react-hot-toast';
 
-
 // Validation schema for product form
 const ProductSchema = Yup.object().shape({
-  name: Yup.string()
-    .min(2, 'Too Short!')
-    .max(50, 'Too Long!')
-    .required('Naam nhi hai kya?'),
-  description: Yup.string()
-    .min(2, 'Too Short!')
-    .max(150, 'Too Long!')
-    .required(),
-  price: Yup.number()
-    .required()
-    .positive()
-    .integer(),
-  image: Yup.string()
-    .required()
+  name: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Name is required'),
+  description: Yup.string().min(2, 'Too Short!').max(150, 'Too Long!').required('Description is required'),
+  price: Yup.number().required('Price is required').positive('Price must be positive').integer('Price must be an integer'),
+  image: Yup.string().required('Image is required'),
 });
 
 const AddProduct = () => {
-
   const [preview, setPreview] = React.useState('');
   const token = typeof window !== 'undefined' ? localStorage.getItem('seller-token') : '';
 
@@ -33,61 +21,59 @@ const AddProduct = () => {
     const file = e.target.files[0];
     const fd = new FormData();
     fd.append('file', file);
-    fd.append('upload_preset', 'PRIYANSHU CHAUBEY')
-    fd.append('cloud_name', 'dyiomyslq')
+    fd.append('upload_preset', 'PRIYANSHU CHAUBEY');
+    fd.append('cloud_name', 'dyiomyslq');
 
     axios.post('https://api.cloudinary.com/v1_1/dyiomyslq/image/upload', fd)
       .then((result) => {
-        toast.success('file uploaded successfully');
-        console.log(result.data);
+        toast.success('File uploaded successfully');
         setPreview(result.data.url);
         formik.setFieldValue('image', result.data.url);
-      }).catch((err) => {
-        console.log(err);
-        toast.error('failed to upload file');
-
+      })
+      .catch(() => {
+        toast.error('Failed to upload file');
       });
-
-  }
+  };
 
   const formik = useFormik({
     initialValues: {
       name: '',
       description: '',
       price: '',
-      image: ''
+      image: '',
     },
+    validationSchema: ProductSchema,
     onSubmit: (values, { setSubmitting }) => {
-      console.log(values);
-
       axios.post(`${process.env.NEXT_PUBLIC_API_URL}/product/add`, values, {
         headers: {
-          'x-auth-token': token
-        }
+          'x-auth-token': token,
+        },
       })
-        .then((result) => {
+        .then(() => {
           toast.success('Product added successfully');
           setSubmitting(false);
-        }).catch((err) => {
+        })
+        .catch(() => {
           toast.error('Something went wrong');
           setSubmitting(false);
         });
-    }
+    },
   });
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <form onSubmit={formik.handleSubmit} className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-4">Add New Product</h2>
+    <div className="p-4 max-w-md mx-auto">
+      <h1 className="text-2xl font-bold mb-4">Add New Product</h1>
+      <form onSubmit={formik.handleSubmit} className="bg-white p-6 rounded-lg shadow-md">
         <div className="mb-4">
+          <label className="block text-gray-700">Name</label>
           <input
-
             name="name"
             className="w-full px-3 py-2 border rounded-lg"
             value={formik.values.name}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
+          {formik.touched.name && formik.errors.name && <p className="text-red-500 text-sm">{formik.errors.name}</p>}
         </div>
         <div className="mb-4">
           <label className="block text-gray-700">Description</label>
@@ -98,6 +84,7 @@ const AddProduct = () => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
+          {formik.touched.description && formik.errors.description && <p className="text-red-500 text-sm">{formik.errors.description}</p>}
         </div>
         <div className="mb-4">
           <label className="block text-gray-700">Price</label>
@@ -108,27 +95,30 @@ const AddProduct = () => {
             value={formik.values.price}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            required
           />
+          {formik.touched.price && formik.errors.price && <p className="text-red-500 text-sm">{formik.errors.price}</p>}
         </div>
         <div className="mb-4">
           <label className="block text-gray-700">Image</label>
-          {/* <input type="file" onChange={upload} /> */}
           <input
             type="file"
             className="w-full px-3 py-2 border rounded-lg"
             onChange={upload}
           />
+          {formik.touched.image && formik.errors.image && <p className="text-red-500 text-sm">{formik.errors.image}</p>}
         </div>
         {preview && <img src={preview} alt="preview" className="w-32 h-32 object-cover mt-2" />}
 
-        <button disabled={!formik.values.image} type="submit" className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 disabled:bg-blue-500/50">
+        <button
+          disabled={!formik.values.image}
+          type="submit"
+          className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 disabled:bg-blue-500/50"
+        >
           Add Product
         </button>
       </form>
     </div>
   );
 };
-
 
 export default AddProduct;
