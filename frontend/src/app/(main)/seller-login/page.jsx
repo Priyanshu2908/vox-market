@@ -23,12 +23,12 @@ const  SellerLogin = () => {
     onSubmit: (values, { resetForm, setSubmitting }) => {
       console.log(values);
 
-      axios.get('http://localhost:5000/user/authenticate', values) // post request to login 
+      axios.get('http://localhost:5000/seller/authenticate', values) // post request to login 
         .then((result) => {
           toast.success('Login Successful')
-          resetForm(); // reset form
-          router.push('/seller/profile');// redirect to dashboard 
           console.log(result.data?.token);
+          resetForm(); // reset form
+          router.push('/seller/dashboard');
           localStorage.setItem('seller-token', result.data?.token); // save token in local storage
         }).catch((err) => {
           console.log(err);
@@ -36,9 +36,6 @@ const  SellerLogin = () => {
           setSubmitting(false);
 
         });
-      
-
-
     },
     validationSchema: LoginSchema
 

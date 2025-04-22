@@ -1,8 +1,12 @@
+'use client'
+import Navbar from '@/components/Navbar';
 import Link from 'next/link';
 import React from 'react'
 
 const page = () => {
     return (
+        <>
+        <Navbar/>
         <div
         className="min-h-screen flex flex-col items-center justify-center bg-cover bg-center p-6"
         style={{ backgroundImage: "url('https://imgs.search.brave.com/SfCXjakS5ZZK2KtD3-OHYV_hOq7lQIpxL7OvANVj854/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vb3Jp/Z2luYWxzL2FkL2Zl/L2M2L2FkZmVjNjA2/MjA0MjZjNTNmOGIw/NWUwZTZiYTRiZWJl/LmpwZw')" }}>
@@ -17,6 +21,7 @@ const page = () => {
                 </div>
             </div>
         </div>
+        </>
     );
 }
 
