@@ -8,7 +8,7 @@ import { toast } from 'react-hot-toast';
 // Validation schema for product form
 const ProductSchema = Yup.object().shape({
   name: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Name is required'),
-  description: Yup.string().min(2, 'Too Short!').max(150, 'Too Long!').required('Description is required'),
+  description: Yup.string().min(2, 'Too Short!').max(500, 'Too Long!').required('Description is required'),
   price: Yup.number().required('Price is required').positive('Price must be positive').integer('Price must be an integer'),
   image: Yup.string().required('Image is required'),
 });
@@ -61,7 +61,7 @@ const AddProduct = () => {
   });
 
   return (
-    <div className="p-4 max-w-md mx-auto">
+    <div className="p-4 mt-24 max-w-md mx-auto  ">
       <h1 className="text-2xl font-bold mb-4">Add New Product</h1>
       <form onSubmit={formik.handleSubmit} className="bg-white p-6 rounded-lg shadow-md">
         <div className="mb-4">
