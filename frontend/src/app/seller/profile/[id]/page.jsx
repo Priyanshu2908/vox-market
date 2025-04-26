@@ -1,77 +1,158 @@
-'use client'
-import React, { useEffect, useState } from "react";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import axios from "axios"; // Import axios for API calls
-import { Avatar } from "@radix-ui/react-avatar";
+'use client';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { toast } from 'react-hot-toast';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
-const SellerProfilePage = () => {
+const SellerProfile = () => {
+  const [isEditing, setIsEditing] = useState(false);
 
-  const [seller, setSeller] = useState([]);
+  const profileSchema = Yup.object().shape({
+    name: Yup.string().required('Name is required'),
+    email: Yup.string().email('Invalid email').required('Email is required'),
+    contact: Yup.string().required('Contact number is required'),
+    address: Yup.string().required('Address is required'),
+  });
 
-   const fetchSellerData = async () => {
-       try {
-           const res = await axios.get('http://localhost:5000/seller/getall');
-           setSeller(res.data);
-           console.table(res.data);
-           // Uncomment or define setContactList if needed
-           // setContactList(res.data);
-       } catch (error) {
-           console.error("Error fetching seller data:", error);
-       }
-   };
+  const profileForm = useFormik({
+    initialValues: {
+      name: '',
+      email: '',
+      contact: '',
+      address: '',
+    },
+    validationSchema: profileSchema,
+    onSubmit: async (values, { setSubmitting }) => {
+      try {
+        const token = localStorage.getItem('seller-token');
+        await axios.put('http://localhost:5000/seller/update', values, {
+          headers: {
+            'x-auth-token': token
+          }
+        });
+        toast.success('Profile updated successfully');
+        setIsEditing(false);
+      } catch (error) {
+        console.error('Error updating profile:', error);
+        toast.error(error.response?.data?.message || 'Failed to update profile');
+      } finally {
+        setSubmitting(false);
+      }
+    },
+  });
 
   useEffect(() => {
-       fetchSellerData();
-   },[]);
-   
-   
-  // const seller = {
-  //   name: " ",
-  //   avatar: "",
-  //   rating: "",  
-  //   totalSales: "",
-  //   products: [
-  //     {
-  //       id: 1,
-  //       name: "",
-  //       image: "",
-  //       price: "",
-  //     },
-  //   ],
-  // };
+    const fetchProfile = async () => {
+      try {
+        const token = localStorage.getItem('seller-token');
+        const response = await axios.get('http://localhost:5000/seller/profile', {
+          headers: {
+            'x-auth-token': token
+          }
+        });
+        const profile = response.data;
+        profileForm.setValues({
+          name: profile.name || '',
+          email: profile.email || '',
+          contact: profile.contact || '',
+          address: profile.address || '',
+        });
+      } catch (error) {
+        console.error('Error fetching profile:', error);
+        toast.error('Failed to load profile');
+      }
+    };
+
+    fetchProfile();
+  }, []);
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
-      <Card>
-        <CardHeader className="flex items-center gap-4">
-          {/* <Avatar  className="w-20 h-20" src={seller.avatar} alt={seller.name} /> */}
-        </CardHeader>
-        {/* <div className="flex items-center gap-4 p-4">
-          <img className="w-20 h-20 rounded-full" src={seller.avatar} alt={seller.name} />
-          <div>
-            <h3 className="text-lg font-semibold">{seller.name}</h3>
-            <p className="text-gray-500">Total Sales: {seller.totalSales}</p>
-            <div className="flex items-center gap-1 text-yellow-500">
-              <span className="text-sm">⭐ {seller.rating} / 5</span>
-            </div>
-          </div>
-        </div> */}
-        <div className="grid grid-cols-3 gap-4 mt-4">
-          {seller.map((product,index) => (
-            <Card key={index}>
-              <CardContent className="flex flex-col items-center p-4">
-                <img src={product.image} alt={product.name} className="w-24 h-24" />
-                <p className="mt-2 font-medium">{product.name}</p>
-                <p className="text-gray-500">{product.price}</p>
-                <Button className="mt-2">View</Button>
-              </CardContent>
-            </Card>
-          ))}
+    <div className="p-4 ml-72 bg-gray-100 min-h-screen">
+      <div className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-bold">Seller Profile</h1>
+          <button
+            onClick={() => setIsEditing(!isEditing)}
+            className="px-4 py-2 text-sm text-blue-600 hover:text-blue-800"
+          >
+            {isEditing ? 'Cancel' : 'Edit Profile'}
+          </button>
         </div>
-      </Card>
+
+        <form onSubmit={profileForm.handleSubmit} className="space-y-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+            <input
+              type="text"
+              name="name"
+              disabled={!isEditing}
+              onChange={profileForm.handleChange}
+              value={profileForm.values.name}
+              className="w-full p-2 border rounded focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100"
+            />
+            {profileForm.touched.name && profileForm.errors.name && (
+              <p className="text-red-500 text-xs mt-1">{profileForm.errors.name}</p>
+            )}
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+            <input
+              type="email"
+              name="email"
+              disabled={!isEditing}
+              onChange={profileForm.handleChange}
+              value={profileForm.values.email}
+              className="w-full p-2 border rounded focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100"
+            />
+            {profileForm.touched.email && profileForm.errors.email && (
+              <p className="text-red-500 text-xs mt-1">{profileForm.errors.email}</p>
+            )}
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Contact</label>
+            <input
+              type="text"
+              name="contact"
+              disabled={!isEditing}
+              onChange={profileForm.handleChange}
+              value={profileForm.values.contact}
+              className="w-full p-2 border rounded focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100"
+            />
+            {profileForm.touched.contact && profileForm.errors.contact && (
+              <p className="text-red-500 text-xs mt-1">{profileForm.errors.contact}</p>
+            )}
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
+            <textarea
+              name="address"
+              disabled={!isEditing}
+              onChange={profileForm.handleChange}
+              value={profileForm.values.address}
+              className="w-full p-2 border rounded focus:ring-blue-500 focus:border-blue-500 h-32 disabled:bg-gray-100"
+            />
+            {profileForm.touched.address && profileForm.errors.address && (
+              <p className="text-red-500 text-xs mt-1">{profileForm.errors.address}</p>
+            )}
+          </div>
+
+          {isEditing && (
+            <button
+              type="submit"
+              disabled={profileForm.isSubmitting}
+              className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors disabled:opacity-50"
+            >
+              {profileForm.isSubmitting ? 'Updating...' : 'Update Profile'}
+            </button>
+          )}
+        </form>
+      </div>
     </div>
   );
+};
 
-}
-export default SellerProfilePage;
+export default SellerProfile;

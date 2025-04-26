@@ -30,6 +30,18 @@ const productSchema = new Schema(
       type: String,
 
     },
+    category: {
+      type: String,
+      required: true,
+      enum: ['electronics', 'clothing', 'books', 'home', 'toys'],
+    },
+    stock: {
+      type: Number,
+      required: true,
+      min: 0,
+      max: 10000,
+    },
+    
 
   },
   { timestamps: true } // Automatically adds createdAt and updatedAt fields

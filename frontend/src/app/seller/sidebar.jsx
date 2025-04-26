@@ -1,15 +1,24 @@
 'use client';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { 
   HomeIcon, 
   PlusCircleIcon, 
   ClipboardDocumentListIcon, 
-  UserCircleIcon 
+  UserCircleIcon,
+  ArrowRightOnRectangleIcon 
 } from '@heroicons/react/24/outline';
+import toast from 'react-hot-toast';
 
 const Sidebar = () => {
+  const router = useRouter();
   const pathname = usePathname();
+
+  const handleLogout = () => {
+    localStorage.removeItem('seller-token');
+    toast.success('Logged out successfully');
+    router.push('/seller-login');
+  };
 
   const menuItems = [
     { 
@@ -81,6 +90,14 @@ const Sidebar = () => {
         </nav>
         
         <div className="p-6 mt-auto">
+          <button
+            onClick={handleLogout}
+            className="w-full mb-4 flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all duration-300 hover:bg-white/5 text-red-400 hover:text-red-300"
+          >
+            <ArrowRightOnRectangleIcon className="w-6 h-6" />
+            <span className="font-medium tracking-wide">Logout</span>
+          </button>
+          
           <div className="p-4 rounded-xl bg-gradient-to-br from-gray-800 to-gray-900 border border-white/5">
             <div className="text-sm text-gray-400">
               <span className="block opacity-75">© 2024 Vox Market</span>

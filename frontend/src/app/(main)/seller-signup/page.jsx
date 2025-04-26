@@ -10,23 +10,28 @@ import * as Yup from 'yup';
 
 const SignupSchema = Yup.object().shape({
   name: Yup.string()
-    .min(2, 'Too Short!')
-    .max(50, 'Too Long!')
-    .required('Naam nhi hai kya?'),
-  email: Yup.string().email('Invalid email').required('Required'),
-  password: Yup.string().required('Password is required')
-    .matches(/[a-z]/, 'Lowercase letter is required')
-    .matches(/[A-Z]/, 'Uppercase letter is required')
-    .matches(/[0-9]/, 'Number is required')
-    .matches(/[\W]/, 'Special character is required'),
-  confirmPassword: Yup.string().required('Confirm Password is required')
+    .min(3, 'Name must be at least 3 characters')
+    .max(100, 'Name is too long')
+    .required('Name is required'),
+  email: Yup.string()
+    .email('Invalid email format')
+    .required('Email is required')
+    .matches(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/, 'Invalid email format'),
+  password: Yup.string()
+    .required('Password is required')
+    .min(6, 'Password must be at least 6 characters')
+    .matches(/[a-z]/, 'Password must contain at least one lowercase letter')
+    .matches(/[A-Z]/, 'Password must contain at least one uppercase letter')
+    .matches(/[0-9]/, 'Password must contain at least one number')
+    .matches(/[\W]/, 'Password must contain at least one special character'),
+  confirmPassword: Yup.string()
+    .required('Please confirm your password')
     .oneOf([Yup.ref('password'), null], 'Passwords must match')
 });
 
 const SellerSignup = () => {
   const router = useRouter();
 
-  // initializing formik
   const signupForm = useFormik({
     initialValues: {
       name: '',
@@ -34,30 +39,24 @@ const SellerSignup = () => {
       password: '',
       confirmPassword: ''
     },
-    onSubmit: (values, { resetForm, setSubmitting }) => {
-      console.log(values);
-
-      // send values to backend
-      // send a post request to backend
-      axios.post('http://localhost:5000/seller/register', values)
-        .then((result) => {
+    onSubmit: async (values, { resetForm, setSubmitting }) => {
+      try {
+        const { confirmPassword, ...submitData } = values;
+        const response = await axios.post('http://localhost:5000/seller/register', submitData);
+        
+        if (response.status === 201) {
           toast.success('Seller registered successfully');
           resetForm();
           router.push('/seller-login');
-        })
-        .catch((err) => {
-          console.log(err);
-          if (err.response && err.response.data && err.response.data.message) {
-            toast.error(err.response.data.message); // Display the error from the backend
-          } else {
-            toast.error('Something went wrong');
-          }
-          setSubmitting(false);
-        });
-
+        }
+      } catch (err) {
+        console.error(err);
+        toast.error(err.response?.data?.message || 'Registration failed');
+        setSubmitting(false);
+      }
     },
     validationSchema: SignupSchema
-  })
+  });
 
   return (
     <div className='max-w-xl mx-auto'>
@@ -207,7 +206,7 @@ const SellerSignup = () => {
                   </label>
                   <div className="relative">
                     <input
-                      type="text"
+                      type="password"
                       id="password"
                       onChange={signupForm.handleChange}
                       value={signupForm.values.password}
@@ -248,7 +247,7 @@ const SellerSignup = () => {
                   </label>
                   <div className="relative">
                     <input
-                      type="text"
+                      type="password"
                       id="confirmPassword"
                       onChange={signupForm.handleChange}
                       value={signupForm.values.confirmPassword}

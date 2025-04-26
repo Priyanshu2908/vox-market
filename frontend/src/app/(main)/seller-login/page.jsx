@@ -10,6 +10,7 @@ import * as Yup from 'yup';
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required'),
+  password: Yup.string().required('Password is required').min(6, 'Password must be at least 6 characters')
 });
 
 const  SellerLogin = () => {
@@ -21,20 +22,25 @@ const  SellerLogin = () => {
       password: "",
     },
     onSubmit: (values, { resetForm, setSubmitting }) => {
-      console.log(values);
-
-      axios.get('http://localhost:5000/seller/authenticate', values) // post request to login 
+      setSubmitting(true);
+      axios.post('http://localhost:5000/seller/authenticate', values)
         .then((result) => {
-          toast.success('Login Successful')
-          console.log(result.data?.token);
-          resetForm(); // reset form
-          router.push('/seller/dashboard');
-          localStorage.setItem('seller-token', result.data?.token); // save token in local storage
+          if (result.data?.token) {
+            // Store the token securely
+            localStorage.setItem('seller-token', result.data.token);
+            // Set authorization header for future requests
+            axios.defaults.headers.common['x-auth-token'] = result.data.token;
+            toast.success('Login Successful');
+            resetForm();
+            router.push('/seller/dashboard');
+          } else {
+            toast.error('Authentication failed');
+          }
         }).catch((err) => {
-          console.log(err);
-          toast.error('Login Failed');
+          console.error(err);
+          toast.error(err.response?.data?.message || 'Login Failed');
+        }).finally(() => {
           setSubmitting(false);
-
         });
     },
     validationSchema: LoginSchema
@@ -142,12 +148,15 @@ const  SellerLogin = () => {
                     </svg>
                   </div>
                 </div>
-                <p
-                  className="hidden text-xs text-red-600 mt-2"
-                  id="password-error"
-                >
-                  8+ characters required
-                </p>
+                {
+                  (loginForm.touched.password && loginForm.errors.password) &&
+                  (
+                    <p className=" text-xs text-red-600 mt-2" id="password-error">
+                      {loginForm.errors.password}
+                    </p>
+
+                  )
+                }
               </div>
               {/* End Form Group */}
               {/* Checkbox */}
