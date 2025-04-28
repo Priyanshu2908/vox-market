@@ -49,7 +49,7 @@ const Sidebar = () => {
         <div className="p-8">
           <h1 className="text-2xl font-bold">
             <span className="bg-gradient-to-r from-sky-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
-              Vox Market
+              Quickart
             </span>
             <div className="text-sm font-normal mt-1 text-gray-400">Seller Portal</div>
           </h1>
@@ -100,7 +100,7 @@ const Sidebar = () => {
           
           <div className="p-4 rounded-xl bg-gradient-to-br from-gray-800 to-gray-900 border border-white/5">
             <div className="text-sm text-gray-400">
-              <span className="block opacity-75">© 2024 Vox Market</span>
+              <span className="block opacity-75">© 2024 Quickart</span>
               <span className="text-xs opacity-50">All rights reserved</span>
             </div>
           </div>

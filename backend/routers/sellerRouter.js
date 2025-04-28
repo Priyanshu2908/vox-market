@@ -1,5 +1,6 @@
 const express = require('express');
 const Model = require('../models/sellerModel');
+const Product = require('../models/productModel');
 
 const router = express.Router();
 
@@ -145,6 +146,33 @@ router.post('/authenticate', async (req, res) => {
     } catch (err) {
         console.log(err);
         res.status(500).json({ message: 'Server error' });
+    }
+});
+
+router.get('/dashboard', verifyToken, async (req, res) => {
+    try {
+        const sellerId = req.user._id;
+
+        // Get seller's products
+        const products = await Product.find({ seller: sellerId });
+        const totalProducts = products.length;
+
+        // Get recent products (last 6)
+        const recentProducts = await Product.find({ seller: sellerId })
+            .sort({ createdAt: -1 })
+            .limit(6);
+
+        const dashboardData = {
+            totalProducts,
+            recentProducts,
+            totalSales: 0, // This would need to be calculated from orders if you have an order system
+            reach: totalProducts * 100 // This is a placeholder calculation
+        };
+
+        res.status(200).json(dashboardData);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Error fetching dashboard data' });
     }
 });
 
