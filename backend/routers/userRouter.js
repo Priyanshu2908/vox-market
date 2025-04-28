@@ -105,37 +105,39 @@ router.delete('/delete/:id', (req, res) => {
 });
 
 
-router.get('/authenticate', (req, res) => {
-    Model.findOne(res.body)
-        .then((result) => {
-            if (result) {
-                // generate token
+router.post('/authenticate', async (req, res) => {
+    try {
+        const user = await Model.findOne({ email: req.body.email });
+        if (!user) {
+            return res.status(401).json({ message: 'Email not found' });
+        }
 
-                const { _id, name, email } = result;
-                const payload = { _id, name, email }
+        const isValidPassword = await user.isValidPassword(req.body.password);
+        if (!isValidPassword) {
+            return res.status(401).json({ message: 'Invalid password' });
+        }
 
-                jwt.sign(
-                    payload,
-                    process.env.JWT_SECRET,
-                    { expiresIn: '1d' },
-                    (err, token) => {
-                        if (err) {
-                            console.log(err);
-                            res.status(500).json(err);
-                        } else {
-                            res.status(200).json({ token });
-                        }
-                    }
-                )
+        const { _id, name, email } = user;
+        const payload = { _id, name, email };
+        const userData = { _id, name, email };
 
-            } else {
-                res.status(401).json({ message: 'Invalid Id or Password' })
+        jwt.sign(
+            payload,
+            process.env.JWT_SECRET,
+            { expiresIn: '1d' },
+            (err, token) => {
+                if (err) {
+                    console.log(err);
+                    res.status(500).json(err);
+                } else {
+                    res.status(200).json({ token, user: userData });
+                }
             }
-        }).catch((err) => {
-            console.log(err);
-            res.status(500).json(err);
-
-        });
+        );
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: 'Server error' });
+    }
 });
 
 module.exports = router;

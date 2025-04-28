@@ -23,22 +23,22 @@ const Login = () => {
     onSubmit: (values, { resetForm, setSubmitting }) => {
       console.log(values);
 
-      axios.get('http://localhost:5000/user/authenticate', values) // post request to login 
+      axios.post('http://localhost:5000/user/authenticate', values)
         .then((result) => {
-          toast.success('Login Successful')
-          resetForm(); // reset form
-          router.push('/Home');// redirect to dashboard 
-          console.log(result.data?.token);
-          localStorage.setItem('token', result.data?.token); // save token in local storage
+          if (result.data?.token && result.data?.user) {
+            localStorage.setItem('token', result.data.token);
+            localStorage.setItem('user', JSON.stringify(result.data.user));
+            toast.success('Login Successful');
+            resetForm();
+            router.push('/');
+          } else {
+            toast.error('Login failed - invalid response from server');
+          }
         }).catch((err) => {
           console.log(err);
-          toast.error('Login Failed');
+          toast.error(err.response?.data?.message || 'Login Failed');
           setSubmitting(false);
-
         });
-      
-
-
     },
     validationSchema: LoginSchema
 
