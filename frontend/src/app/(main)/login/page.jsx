@@ -47,16 +47,15 @@ const Login = () => {
   return (
     <div className="my-7 w-1/3 mx-auto bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-neutral-900 dark:border-neutral-700 ">
       <div className="p-4 sm:p-7">
-        <div className="text-center">
-          <h1 className="block text-2xl font-bold text-gray-800 dark:text-white">
+        <div className="">
+          <h1 className="block text-2xl font-bold text-gray-800 dark:text-white text-center">
             Login
           </h1>
           <br />
           <br />
           <Link
-              className="text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium dark:text-blue-500"
-              href="/signup"
-            >
+              className="text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium dark:text-blue-500 "
+              href="/signup" >
               Sign up here
             </Link>
 
